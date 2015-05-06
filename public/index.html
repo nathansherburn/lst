@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>lst</title>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" >
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<style type="text/css">
+	* {
+		box-sizing: border-box;
+		font-family: Helvetica;
+	}
+	body {
+		padding: 0;
+		margin: 0;
+	}
+	.sheet {
+		max-width: 960px;
+		min-height: 100px;
+		margin: 0 auto;
+		border-radius: 4px;
+		box-shadow: 0px 2px 12px #999;
+		padding: 10px;
+	}
+	.new-item {
+		width: 100%;
+		padding: 10px;
+		border: none;
+		border-radius: 4px;
+		background-color: #eee;
+		font-size: 1.2em;
+		margin-bottom: 10px;
+	}
+	.item {
+		height: 70px;
+		box-shadow: 0px 0px 2px #999;
+		background-color: #fff;
+		border-radius: 4px;
+		margin-bottom: 10px;
+		padding: 10px;
+		cursor: pointer;
+	}
+	.done {
+		background-color: #444;
+		width: 50px;
+		text-align: center;
+		border-radius: 4px;
+		float: right;
+		height: 50px;
+	}
+	</style>
+</head>
+</head>
+<body ng-app="lst" ng-controller="MainCtrl">
+
+	
+	<div class="sheet">
+		<input class="new-item" id="new-item" type="text" ng-model="newItem">
+		
+		<div ng-sortable="{animation:150}">
+			<div class="item" ng-repeat="item in items">
+				{{item.value}}
+				<div class="done" ng-click="done()"></div>
+			</div>			
+		</div>
+	</div>
+	
+	<script type="application/javascript" src="bower_components/angular/angular.min.js"></script>
+	<script src="http://rubaxa.github.io/Sortable/Sortable.js"></script>
+	<script src="http://rubaxa.github.io/Sortable/ng-sortable.js"></script>
+	<script type="application/javascript" src="app.js"></script>
+</body>
+</html>
