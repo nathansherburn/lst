@@ -1,0 +1,28 @@
+{
+  "name": "lst",
+  "version": "1.0.0",
+  "description": "a todo list app",
+  "main": "app.js",
+  "dependencies": {
+    "express": "^4.12.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nathansherburn/lst.git"
+  },
+  "keywords": [
+    "to",
+    "do",
+    "list"
+  ],
+  "author": "Nathan Sherburn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/nathansherburn/lst/issues"
+  },
+  "homepage": "https://github.com/nathansherburn/lst"
+}
