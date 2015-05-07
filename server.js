@@ -1,9 +1,8 @@
 var express = require('express');
-//var server = express.createServer();
-// express.createServer()  is deprecated. 
-var server = express(); // better instead
+var server = express();
 
-server.use('/media', express.static(__dirname + '/media'));
 server.use(express.static(__dirname + '/public'));
+
+server.ger("/", function (req, res) { send("hello"); } )
 
 server.listen(3000);
