@@ -15,7 +15,7 @@ var allowCrossDomain = function(req, res, next) {
     next();
 }
 
-app.use(allowCrossDomain);
+server.use(allowCrossDomain);
 
 // break out
 var itemSchema = new mongoose.Schema({

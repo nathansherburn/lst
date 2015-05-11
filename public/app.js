@@ -1,6 +1,6 @@
 var lst = angular.module("lst",['ng-sortable'])
 
-lst.controller("MainCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
+lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
 	$scope.items = [
 	{
     priority: 1,
@@ -44,12 +44,21 @@ lst.controller("MainCtrl", ['$scope', '$timeout', function ($scope, $timeout) {
     console.log(clickEvent)
     if (clickEvent.keyCode === 13)
     {
-      $scope.items.push({value: $scope.newItem, created: new Date() });
+      var newItem = { value: $scope.newItem, priority: 1 };
+
       // post to server
-      $scope.newItem = "";
-      
-      // collapse mobile keyboard
-      clickEvent.target.blur()
+      $http.post('http://lst-app.herokuapp.com/items/add', newItem).
+      success(function(data, status, headers, config) {
+        console.log(data)
+        // add to list
+        $scope.items.push(newItem);
+        $scope.newItem = "";
+        // collapse mobile keyboard
+        clickEvent.target.blur()
+      }).
+      error(function(data, status, headers, config) {
+        console.log(data)
+      });
     }
   }
 
