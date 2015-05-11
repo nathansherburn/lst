@@ -21,10 +21,10 @@ server.use(bodyParser.json());
 
 // break out
 var itemSchema = new mongoose.Schema({
-  priority:   	{ type: Number, default: 1 },
   value: 		{ type: String, required: true },
   created: 		{ type: Date, default: new Date() },
-  backlogged: 	{ type: Boolean, default: false }
+  backlogged: 	{ type: Boolean, default: false },
+  current: 		{ type: Boolean, default: false }
 });
 
 var Item = mongoose.model('item', itemSchema);
@@ -38,10 +38,7 @@ server.get("/items", function (req, res) {
 
 server.post("/items/add", function (req, res) {
 
-	
-
 	var newItem = new Item({
-		priority:   1,
 		value: 		req.body.value
 	});
 	
@@ -53,7 +50,10 @@ server.post("/items/add", function (req, res) {
 });
 
 server.post("/items/delete", function (req, res) {
-	res.json("hello");
+	Item.findByIdAndRemove({_id: req.body.id}, function (err) {
+		if (err) return console.log(err);
+		res.json("done")
+	})
 });
 
 
