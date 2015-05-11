@@ -4,7 +4,9 @@ var mongoose	= require('mongoose');
 
 server.use(express.static(__dirname + '/public'));
 
-mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds037067.mongolab.com:37067/heroku_app36733834');
+var mongoURI = 'mongodb://localhost/test';
+mongoose.connect(process.env.MONGOLAB_URI || mongoURI);
+// mongoose.connect('mongodb://<dbuser>:<dbpassword>@ds037067.mongolab.com:37067/heroku_app36733834');
 
 server.get("/items", function (req, res) {
 	var Cat = mongoose.model('Cat', { name: String });
