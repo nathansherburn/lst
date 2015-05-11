@@ -19,9 +19,10 @@ server.use(allowCrossDomain);
 
 // break out
 var itemSchema = new mongoose.Schema({
-  priority:   	{ type: Number, required: true },
-  created: 		{ type: Date, default: new Date() },
+  priority:   	{ type: Number, default: 1 },
   value: 		{ type: String, required: true }
+  created: 		{ type: Date, default: new Date() },
+  backlogged: 	{ type: Boolean, default: false }
 });
 
 var Item = mongoose.model('item', itemSchema);

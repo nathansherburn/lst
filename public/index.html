@@ -94,7 +94,7 @@
 
 	
 	<div class="sheet">
-		<input class="new-item" type="text" ng-model="newItem" ng-keypress="addItem($event)">
+		<input class="new-item" type="text" ng-model="newItemValue" ng-keypress="addItem($event)">
 		
 		<div ng-sortable="{handle: '.handle', animation:150}">
 			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | filter:{backlogged: false}">

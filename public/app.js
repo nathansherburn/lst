@@ -4,13 +4,13 @@ lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $ti
 
   $scope.items = [];
   $scope.backlogOpen = false;
-  $scope.newItem = "";
+  $scope.newItemValue = "";
 
   $http.get('http://lst-app.herokuapp.com/items').
   success(function(data, status, headers, config) {
-    console.log(data)
     // add to list
-    $scope.items.push(newItem);
+    $scope.items = data;
+    console.log($scope.items)
   }).
   error(function(data, status, headers, config) {
     console.log(data)
@@ -63,8 +63,8 @@ lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $ti
     {
       var newItem = { 
         priority:     1,
-        value:        $scope.newItem,
-        created: new Date(),
+        value:        $scope.newItemValue,
+        created:      new Date(),
         backlogged:   false
       };
 
@@ -74,7 +74,7 @@ lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $ti
         console.log(data)
         // add to list
         $scope.items.push(newItem);
-        $scope.newItem = "";
+        $scope.newItemValue = "";
         // collapse mobile keyboard
         clickEvent.target.blur()
       }).
