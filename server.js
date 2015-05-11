@@ -1,5 +1,6 @@
 var express 	= require('express');
 var mongoose	= require('mongoose');
+var bodyParser 	= require('body-parser')
 var server 		= express();
 
 server.use(express.static(__dirname + '/public'));
@@ -16,6 +17,7 @@ var allowCrossDomain = function(req, res, next) {
 }
 
 server.use(allowCrossDomain);
+server.use(bodyParser.json());
 
 // break out
 var itemSchema = new mongoose.Schema({
@@ -40,7 +42,7 @@ server.post("/items/add", function (req, res) {
 
 	var newItem = new Item({
 		priority:   1,
-		value: 		"test"
+		value: 		req.body.value
 	});
 	
 	newItem.save(function (err) {

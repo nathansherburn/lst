@@ -16,45 +16,6 @@ lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $ti
     console.log(data)
   });
 
-	// $scope.items = [
-	// {
- //    priority: 1,
-	// 	value:'learn Sortable',
-	// 	created: new Date(),
- //    backlogged: false
-	// },
-	// {
- //    priority: null,
-	// 	value:'use gn-sortable',
-	// 	created: new Date(),
- //    backlogged: true
-	// },
-	// {
- //    priority: null,
-	// 	value:'Enjoy',
-	// 	created: new Date(),
- //    backlogged: true
-	// },
- //  {
- //    priority: null,
- //    value:'test 1',
- //    created: new Date(),
- //    backlogged: true
- //  },
- //  {
- //    priority: null,
- //    value:'test barry',
- //    created: new Date(),
- //    backlogged: true
- //  },
- //  {
- //    priority: null,
- //    value:'selma',
- //    created: new Date(),
- //    backlogged: true
- //  }
- //  ];
-
 
 
 	$scope.addItem = function (clickEvent) {
