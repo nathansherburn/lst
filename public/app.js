@@ -1,50 +1,72 @@
 var lst = angular.module("lst",['ng-sortable'])
 
 lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
-	$scope.items = [
-	{
-    priority: 1,
-		value:'learn Sortable',
-		created: new Date()
-	},
-	{
-    priority: null,
-		value:'use gn-sortable',
-		created: new Date()
-	},
-	{
-    priority: null,
-		value:'Enjoy',
-		created: new Date()
-	}
-	];
 
-  $scope.backlog = [
-  {
-    priority: null,
-    value:'test 1',
-    created: new Date()
-  },
-  {
-    priority: null,
-    value:'test barry',
-    created: new Date()
-  },
-  {
-    priority: null,
-    value:'selma',
-    created: new Date()
-  }
-  ];
-
-
+  $scope.items = [];
   $scope.backlogOpen = false;
+  $scope.newItem = "";
+
+  $http.get('http://lst-app.herokuapp.com/items').
+  success(function(data, status, headers, config) {
+    console.log(data)
+    // add to list
+    $scope.items.push(newItem);
+  }).
+  error(function(data, status, headers, config) {
+    console.log(data)
+  });
+
+	// $scope.items = [
+	// {
+ //    priority: 1,
+	// 	value:'learn Sortable',
+	// 	created: new Date(),
+ //    backlogged: false
+	// },
+	// {
+ //    priority: null,
+	// 	value:'use gn-sortable',
+	// 	created: new Date(),
+ //    backlogged: true
+	// },
+	// {
+ //    priority: null,
+	// 	value:'Enjoy',
+	// 	created: new Date(),
+ //    backlogged: true
+	// },
+ //  {
+ //    priority: null,
+ //    value:'test 1',
+ //    created: new Date(),
+ //    backlogged: true
+ //  },
+ //  {
+ //    priority: null,
+ //    value:'test barry',
+ //    created: new Date(),
+ //    backlogged: true
+ //  },
+ //  {
+ //    priority: null,
+ //    value:'selma',
+ //    created: new Date(),
+ //    backlogged: true
+ //  }
+ //  ];
+
+
 
 	$scope.addItem = function (clickEvent) {
-    console.log(clickEvent)
+
     if (clickEvent.keyCode === 13)
     {
-      var newItem = { value: $scope.newItem, priority: 1 };
+      var newItem = { 
+        priority:     1,
+        value:        $scope.newItem,
+        created: new Date(),
+        backlogged:   false
+      };
 
       // post to server
       $http.post('http://lst-app.herokuapp.com/items/add', newItem).
@@ -61,16 +83,10 @@ lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $ti
       });
     }
   }
-
-  $scope.deleteItem = function (id) {
-    // delete item from server
-
-    // delete item from list
-    console.log("pretending to delete " + id)
-  }
    
-   $scope.done = function () {
+  $scope.done = function () {
     // delete from server
+
 
     // remove from list
     console.log(this.item)
@@ -81,20 +97,12 @@ lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $ti
 
   $scope.moveFromBacklogToList = function () {
     // add to items list
-    $scope.items.push(this.item);
-
-    // remove from backlog
-    var index = $scope.backlog.indexOf(this.item);
-    $scope.backlog.splice(index, 1);     
+    this.item.backlogged = false;
   }
 
   $scope.moveFromListToBacklog = function () {
     // add to backlog
-    $scope.backlog.push(this.item);
-
-    // remove from items
-    var index = $scope.items.indexOf(this.item);
-    $scope.items.splice(index, 1);     
+    this.item.backlogged = true;
   }
 
 

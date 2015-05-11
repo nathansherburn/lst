@@ -97,7 +97,7 @@
 		<input class="new-item" type="text" ng-model="newItem" ng-keypress="addItem($event)">
 		
 		<div ng-sortable="{handle: '.handle', animation:150}">
-			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | filter:priority">
+			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | filter:{backlogged: false}">
 				<div class="add-remove" ng-click="moveFromListToBacklog()"><i class="fa fa-minus-square-o fa-1x"></i></div>
 				<div class="item-text">{{item.value}}</div>
 				<div class="handle"><i class="fa fa-bars"></i></div>
@@ -109,11 +109,11 @@
 		<div class="backlog" ng-click="backlogOpen = !backlogOpen"><i class="fa fa-ellipsis-h"></i></div>
 
 		<div ng-show="backlogOpen">
-			<div class="item" ng-repeat="item in backlog">
+			<div class="item" ng-repeat="item in items | filter:{backlogged: true}">
 				<div class="add-remove" ng-click="moveFromBacklogToList()"><i class="fa fa-plus-square-o fa-1x"></i></div>
 				<div class="item-text">{{item.value}}</div>
 			</div>			
-			<div class="empty" ng-show="!backlog.length">Backlog is empty</div>	
+			<div class="empty" ng-show="!items.length">Backlog is empty</div>	
 		</div>
 
 	</div>

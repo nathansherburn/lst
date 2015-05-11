@@ -24,14 +24,18 @@ var itemSchema = new mongoose.Schema({
   value: 		{ type: String, required: true }
 });
 
+var Item = mongoose.model('item', itemSchema);
 
 server.get("/items", function (req, res) {
-
+	Item.find(function (err, items) {
+	  if (err) return console.error(err);
+	  res.json(items)
+	})
 });
 
 server.post("/items/add", function (req, res) {
 
-	var Item = mongoose.model('item', itemSchema);
+	
 
 	var newItem = new Item({
 		priority:   1,
