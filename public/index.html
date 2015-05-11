@@ -4,18 +4,21 @@
 	<title>lst</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="mobile-web-app-capable" content="yes">
+	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 	<style type="text/css">
 	* {
 		box-sizing: border-box;
 		font-family: Helvetica;
 	}
-	body {
+	body,html {
 		padding: 0;
 		margin: 0;
+		height: 100%;
 	}
 	.sheet {
 		max-width: 960px;
-		min-height: 100px;
+		min-height: 100%;
 		margin: 0 auto;
 		border-radius: 4px;
 		box-shadow: 0px 2px 12px #999;
@@ -24,28 +27,65 @@
 	.new-item {
 		width: 100%;
 		padding: 10px;
-		border: none;
 		border-radius: 4px;
 		background-color: #eee;
 		font-size: 1.2em;
-		margin-bottom: 10px;
+		margin: 10px 0px 20px;
+		border: 1px solid #aaa;
 	}
 	.item {
 		height: 70px;
-		box-shadow: 0px 0px 2px #999;
+		border: 1px solid #aaa;
 		background-color: #fff;
 		border-radius: 4px;
-		margin-bottom: 10px;
+		margin-bottom: 20px;
 		padding: 10px;
 		cursor: pointer;
 	}
 	.done {
-		background-color: #444;
+		border: 1px solid #aaa;
 		width: 50px;
 		text-align: center;
 		border-radius: 4px;
 		float: right;
 		height: 50px;
+		float: right;
+	}
+	.handle {
+		background-color: #eee;
+		width: 30px;
+		text-align: center;
+		border-radius: 4px;
+		border: 1px solid #aaa;
+		float: right;
+		height: 50px;
+		float: right;
+		margin-left: 10px;
+		color: #aaa;
+		padding: 16px 0px;
+	}
+	.current {
+		background-color: #eefaee;
+	}
+	.backlog {
+		border: 1px solid #aaa;
+		margin: 20px 0px 20px;
+		border-radius: 4px;
+		text-align: center;
+		cursor: pointer;
+		color: #aaa;
+		padding: 7px;
+	}
+	.add-remove {
+		float: left;
+		color: #aaa;
+		margin: 0px 10px 10px 0px;
+	}
+	.item-text {
+		float: left;
+	}
+	.empty {
+		text-align: center;
 	}
 	</style>
 </head>
@@ -54,14 +94,28 @@
 
 	
 	<div class="sheet">
-		<input class="new-item" id="new-item" type="text" ng-model="newItem">
+		<input class="new-item" type="text" ng-model="newItem" ng-keypress="addItem($event)">
 		
-		<div ng-sortable="{animation:150}">
-			<div class="item" ng-repeat="item in items">
-				{{item.value}}
+		<div ng-sortable="{handle: '.handle', animation:150}">
+			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | filter:priority">
+				<div class="add-remove" ng-click="moveFromListToBacklog()"><i class="fa fa-minus-square-o fa-1x"></i></div>
+				<div class="item-text">{{item.value}}</div>
+				<div class="handle"><i class="fa fa-bars"></i></div>
 				<div class="done" ng-click="done()"></div>
-			</div>			
+			</div>
+			<div class="empty" ng-show="!items.length">Well done!</div>	
 		</div>
+
+		<div class="backlog" ng-click="backlogOpen = !backlogOpen"><i class="fa fa-ellipsis-h"></i></div>
+
+		<div ng-show="backlogOpen">
+			<div class="item" ng-repeat="item in backlog">
+				<div class="add-remove" ng-click="moveFromBacklogToList()"><i class="fa fa-plus-square-o fa-1x"></i></div>
+				<div class="item-text">{{item.value}}</div>
+			</div>			
+			<div class="empty" ng-show="!backlog.length">Backlog is empty</div>	
+		</div>
+
 	</div>
 	
 	<script type="application/javascript" src="bower_components/angular/angular.min.js"></script>
