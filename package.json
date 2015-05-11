@@ -4,14 +4,12 @@
   "description": "a todo list app",
   "main": "app.js",
   "dependencies": {
-    "bower": "~0.6.",
     "express": "~4.12.3",
-    "mongoose": "^4.0.2"
+    "mongoose": "~4.0.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "test",
-    "postinstall": "./node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
