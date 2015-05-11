@@ -3,7 +3,7 @@ var lst = angular.module("lst",['ng-sortable'])
 lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
 
 var urlBase = "http://lst-app.herokuapp.com";
-//var urlBase = "http://localhost:3000";
+var urlBase = "http://localhost:3000";
 
   $scope.items = [];
   $scope.backlogOpen = false;
@@ -59,15 +59,30 @@ var urlBase = "http://lst-app.herokuapp.com";
     });
   }
 
-
   $scope.moveFromBacklogToList = function () {
-    // add to items list
+    // remove from backlog
     this.item.backlogged = false;
+
+    $http.post(urlBase + '/items/backlog', this.item).
+    success(function(data, status, headers, config) {
+      console.log(data)
+    }).
+    error(function(data, status, headers, config) {
+      console.log(data)
+    });
   }
 
   $scope.moveFromListToBacklog = function () {
     // add to backlog
     this.item.backlogged = true;
+
+    $http.post(urlBase + '/items/backlog', this.item).
+    success(function(data, status, headers, config) {
+      console.log(data)
+    }).
+    error(function(data, status, headers, config) {
+      console.log(data)
+    });
   }
 
 

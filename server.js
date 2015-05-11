@@ -49,6 +49,17 @@ server.post("/items/add", function (req, res) {
 
 });
 
+server.post("/items/backlog", function (req, res) {
+	Item.update(
+		{ _id: req.body._id },
+		{ $set: { "backlogged": req.body.backlogged } },
+		{/* options */},
+		function (err) {
+			if (err) return console.log(err);
+			res.json("hello")
+	});
+});
+
 server.post("/items/delete", function (req, res) {
 	Item.findByIdAndRemove({_id: req.body.id}, function (err) {
 		if (err) return console.log(err);
