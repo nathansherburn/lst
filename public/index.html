@@ -103,7 +103,7 @@
 				<div class="handle"><i class="fa fa-bars"></i></div>
 				<div class="done" ng-click="done()"></div>
 			</div>
-			<div class="empty" ng-show="!items.length">Well done!</div>	
+			<div class="empty" ng-show="numNotBacklogged === 0">Well done!</div>	
 		</div>
 
 		<div class="backlog" ng-click="backlogOpen = !backlogOpen"><i class="fa fa-ellipsis-h"></i></div>
@@ -113,7 +113,7 @@
 				<div class="add-remove" ng-click="moveFromBacklogToList()"><i class="fa fa-plus-square-o fa-1x"></i></div>
 				<div class="item-text">{{item.value}}</div>
 			</div>			
-			<div class="empty" ng-show="!items.length">Backlog is empty</div>	
+			<div class="empty" ng-show="numBacklogged === 0">Backlog is empty</div>	
 		</div>
 
 	</div>

@@ -8,6 +8,25 @@ var urlBase = "http://lst-app.herokuapp.com";
   $scope.items = [];
   $scope.backlogOpen = false;
   $scope.newItemValue = "";
+  $scope.numBacklogged = 0;
+  $scope.numNotBacklogged = 0;
+
+  // Stay up to date with how many tasks are/aren't backlogged
+  $scope.$watch(function(){
+
+    $scope.numBacklogged = 0;
+    $scope.numNotBacklogged = 0;
+
+    for (var i = 0; i < $scope.items.length; i++) {
+      if ($scope.items[i].backlogged === true) {
+        $scope.numBacklogged++;
+      } else {
+        $scope.numNotBacklogged++;
+      }
+    }
+
+  })
+
 
   $http.get(urlBase + '/items').
   success(function(data, status, headers, config) {
@@ -48,7 +67,7 @@ var urlBase = "http://lst-app.herokuapp.com";
    
   $scope.done = function () {
     // delete from server
-  $http.post(urlBase + '/items/delete', {id: this.item._id}).
+    $http.post(urlBase + '/items/delete', {id: this.item._id}).
     success(function(data, status, headers, config) {
       var index = $scope.items.indexOf(this.item);
       console.log(index)
