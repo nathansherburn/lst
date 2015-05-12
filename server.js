@@ -61,7 +61,6 @@ server.post("/items/backlog", function (req, res) {
 });
 
 server.post("/items/current", function (req, res) {
-console.log(req.body)
 	Item.update(
 		{/* find all */},
 		{current: false},
