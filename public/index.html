@@ -87,17 +87,52 @@
 	.empty {
 		text-align: center;
 	}
+	.loading {
+		height: 10px;
+		width: 100%;
+		background-color: #afa;
+		position: fixed;
+		top: 0;
+		left: 0;
+		animation-duration: 0.5s;
+		animation-name: loader;
+		animation-iteration-count: infinite;
+		-webkit-animation-duration: 0.5s;
+		-webkit-animation-name: loader;
+		-webkit-animation-iteration-count: infinite;
+	}
+
+	@keyframes loader {
+	  from {
+	    left: -100%;
+	  }
+
+	  to {
+	    left: 100%;
+	  }
+	}
+
+	@-webkit-keyframes loader {
+	  from {
+	    left: -100%;
+	  }
+
+	  to {
+	    left: 100%;
+	  }
+	}
+
 	</style>
 </head>
 </head>
 <body ng-app="lst" ng-controller="MainCtrl">
 
-	
+	<div class="loading" ng-show="loading"></div>
 	<div class="sheet">
 		<input class="new-item" type="text" ng-model="newItemValue" ng-keypress="addItem($event)">
 		
-		<div ng-sortable="{handle: '.handle', animation:150}">
-			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | filter:{backlogged: false}">
+		<div ng-sortable="{handle:'.handle', animation:150, onUpdate:updateCurrent}">
+			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | orderBy:'-current' | filter:{backlogged: false}">
 				<div class="add-remove" ng-click="moveFromListToBacklog()"><i class="fa fa-minus-square-o fa-1x"></i></div>
 				<div class="item-text">{{item.value}}</div>
 				<div class="handle"><i class="fa fa-bars"></i></div>

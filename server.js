@@ -42,9 +42,9 @@ server.post("/items/add", function (req, res) {
 		value: 		req.body.value
 	});
 	
-	newItem.save(function (err) {
+	newItem.save(function (err, item) {
 	  if (err) return console.log(err)
-	  res.json("hello");
+	  res.json(item);
 	});
 
 });
@@ -53,15 +53,38 @@ server.post("/items/backlog", function (req, res) {
 	Item.update(
 		{ _id: req.body._id },
 		{ $set: { "backlogged": req.body.backlogged } },
-		{/* options */},
+		{multi: false},
 		function (err) {
 			if (err) return console.log(err);
 			res.json("hello")
 	});
 });
 
+server.post("/items/current", function (req, res) {
+console.log(req.body)
+	Item.update(
+		{/* find all */},
+		{current: false},
+		{multi: true},
+		function (err) {
+			if (err) return console.log(err);
+			setCurrent();
+	});
+
+	var setCurrent = function () {
+		Item.update(
+			{_id: req.body._id},
+			{current: true},
+			{multi: false},
+			function (err) {
+				if (err) return console.log(err);
+				res.json("hello")
+		});
+	}
+});
+
 server.post("/items/delete", function (req, res) {
-	Item.findByIdAndRemove({_id: req.body.id}, function (err) {
+	Item.findByIdAndRemove({_id: req.body._id}, function (err) {
 		if (err) return console.log(err);
 		res.json("done")
 	})
