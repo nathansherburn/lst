@@ -55,9 +55,6 @@
 	.current .add-remove {
 		background-color: #fff;
 	}
-	.current .handle {
-		color: #fff;
-	}
 	.current .done {
 		border: 0px;
 		background-color: #eee;
@@ -162,7 +159,7 @@
 			<div class="item current" ng-repeat="item in items | filter:{ backlogged: false, current: true}">
 				<div class="add-remove" ng-click="moveFromListToBacklog()"></div>
 				<div class="item-text">{{item.value}}</div>
-				<div class="done" ng-click="done()"<div>
+				<div class="done" ng-click="done()"></div>
 			</div>
 			<div class="empty" ng-show="numNotBacklogged === 0">Well done!</div>	
 		</div>
@@ -174,7 +171,6 @@
 				<div class="item-text">{{item.value}}</div>
 				<div class="handle"><i class="fa fa-bars"></i></div>
 			</div>
-			<div class="empty" ng-show="numNotBacklogged === 0">Well done!</div>	
 		</div>
 
 		<div class="backlog" ng-click="backlogOpen = !backlogOpen"><i class="fa fa-ellipsis-h"></i></div>
