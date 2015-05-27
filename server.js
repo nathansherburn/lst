@@ -24,7 +24,7 @@ var itemSchema = new mongoose.Schema({
   value: 		{ type: String, required: true },
   created: 		{ type: Date, default: new Date() },
   backlogged: 	{ type: Boolean, default: false },
-  current: 		{ type: Boolean, default: false }
+  current: 		{ type: Boolean, required: true }
 });
 
 var Item = mongoose.model('item', itemSchema);
@@ -39,7 +39,8 @@ server.get("/items", function (req, res) {
 server.post("/items/add", function (req, res) {
 
 	var newItem = new Item({
-		value: 		req.body.value
+		value: 		req.body.value,
+		current:    req.body.current
 	});
 	
 	newItem.save(function (err, item) {
