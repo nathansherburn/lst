@@ -3,7 +3,7 @@ var lst = angular.module("lst",['ng-sortable'])
 lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
 
 var urlBase = "http://lst-app.herokuapp.com";
-// var urlBase = "http://localhost:3000";
+//var urlBase = "http://localhost:3000";
 
   $scope.items = [];
   $scope.backlogOpen = false;
@@ -33,6 +33,7 @@ var urlBase = "http://lst-app.herokuapp.com";
     console.log(data)
     // add to list
     $scope.items = data;
+    setCurrentIfNone($scope.items[0])
   }).
   error(function(data, status, headers, config) {
     console.log(data)
@@ -42,13 +43,13 @@ var urlBase = "http://lst-app.herokuapp.com";
     console.log($scope.items)
 
     if ($scope.items.length > 0) {
+      // show loading bar
       $scope.loading = true;
 
       for (var i = 0; i < $scope.items.length; i++) {
         // make sure all items are not set to current item
         $scope.items[i].current = false;
       }
-      // show loading bar
 
       // set the first item on the list as the current
       $scope.items[0].current = true;
@@ -109,9 +110,10 @@ var urlBase = "http://lst-app.herokuapp.com";
   }
 
   $scope.moveFromBacklogToList = function () {
+    $scope.loading = true;
     // remove from backlog
     this.item.backlogged = false;
-    $scope.loading = true;
+    
     $http.post(urlBase + '/items/backlog', this.item).
     success(function(data, status, headers, config) {
       console.log(data)
@@ -124,10 +126,15 @@ var urlBase = "http://lst-app.herokuapp.com";
   }
 
   $scope.moveFromListToBacklog = function () {
-    // add to backlog
-    this.item.backlogged = true;
     $scope.loading = true;
 
+    // add to backlog and ensure not current
+    this.item.backlogged = true;
+    this.item.current = false;
+
+    // make another non-backlogged tasks the current task
+    setCurrentIfNone(this.item)
+    
     $http.post(urlBase + '/items/backlog', this.item).
     success(function(data, status, headers, config) {
       console.log(data)
@@ -139,5 +146,16 @@ var urlBase = "http://lst-app.herokuapp.com";
     });
   }
 
+  function setCurrentIfNone (potentialCurrent) {
+    var currentExists = false;
+    
+    for (var i in $scope.items) {
+      if ($scope.items[i].current)
+        currentExists = true;
+    }
+
+    if (!currentExists)
+      potentialCurrent.current = true;
+  }
 
 }]);

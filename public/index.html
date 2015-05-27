@@ -110,6 +110,7 @@
 	}
 	.empty {
 		text-align: center;
+		color: #fff;
 	}
 	.loading {
 		height: 10px;
@@ -118,10 +119,10 @@
 		position: fixed;
 		top: 0;
 		left: 0;
-		animation-duration: 0.5s;
+		animation-duration: 5s;
 		animation-name: loader;
 		animation-iteration-count: infinite;
-		-webkit-animation-duration: 0.5s;
+		-webkit-animation-duration: 5s;
 		-webkit-animation-name: loader;
 		-webkit-animation-iteration-count: infinite;
 	}
@@ -153,14 +154,24 @@
 
 	<div class="loading" ng-show="loading"></div>
 	<div class="sheet">
+
 		<input class="new-item" type="text" ng-model="newItemValue" ng-keypress="addItem($event)">
 		
-		<div ng-sortable="{handle:'.handle', animation:150, onUpdate:updateCurrent}">
-			<div class="item" ng-class="{current:$first}" ng-repeat="item in items | orderBy:'-current' | filter:{backlogged: false}">
+		<div ng-sortable="{group:{ name: 'current', pull:false, put:['today']}, animation:150, onAdd:updateCurrent}">
+			<div class="item current" ng-repeat="item in items | filter:{ backlogged: false, current: true}">
+				<div class="add-remove" ng-click="moveFromListToBacklog()"></div>
+				<div class="item-text">{{item.value}}</div>
+				<div class="done" ng-click="done()"<div>
+			</div>
+			<div class="empty" ng-show="numNotBacklogged === 0">Well done!</div>	
+		</div>
+
+
+		<div ng-sortable="{group:{ name: 'today', pull:true}, handle:'.handle', animation:150, sort:true}">
+			<div class="item" ng-repeat="item in items | filter:{backlogged: false, current: false}">
 				<div class="add-remove" ng-click="moveFromListToBacklog()"></div>
 				<div class="item-text">{{item.value}}</div>
 				<div class="handle"><i class="fa fa-bars"></i></div>
-				<div class="done" ng-click="done()"></div>
 			</div>
 			<div class="empty" ng-show="numNotBacklogged === 0">Well done!</div>	
 		</div>

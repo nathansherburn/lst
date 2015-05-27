@@ -50,9 +50,10 @@ server.post("/items/add", function (req, res) {
 });
 
 server.post("/items/backlog", function (req, res) {
+	console.log("hello")
 	Item.update(
 		{ _id: req.body._id },
-		{ $set: { "backlogged": req.body.backlogged } },
+		{ $set: { "backlogged": req.body.backlogged, "current": req.body.current} },
 		{multi: false},
 		function (err) {
 			if (err) return console.log(err);
