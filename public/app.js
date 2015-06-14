@@ -55,7 +55,7 @@ var urlBase = "http://lst-app.herokuapp.com";
     // set the first item on the list as the current
     $scope.items[0].current = true;
 
-    $http.post(urlBase + '/items/current', $scope.items[0])
+    $http.post(urlBase + '/update', $scope.items)
     .success(function(data, status, headers, config) {
         $scope.loading = false;
     })
@@ -77,15 +77,16 @@ var urlBase = "http://lst-app.herokuapp.com";
       };
 
       setCurrentIfNone(newItem);
+      
+      $scope.newItemValue = "";
+      // collapse mobile keyboard
+      clickEvent.target.blur()
 
       // post to server
-      $http.post(urlBase + '/items/add', newItem)
+      $http.post(urlBase + '/new', newItem)
       .success(function(data, status, headers, config) {
         // add to list
         $scope.items.push(data);
-        $scope.newItemValue = "";
-        // collapse mobile keyboard
-        clickEvent.target.blur()
         $scope.loading = false;
       })
       .error(function(data, status, headers, config) {
@@ -99,13 +100,13 @@ var urlBase = "http://lst-app.herokuapp.com";
     $scope.loading = true;
 
     var index = $scope.items.indexOf(this.item);
+
+    $scope.items.splice(index, 1);  
+
+    makeFirstNonBackloggedCurrent()
     
-    $http.post(urlBase + '/items/delete', this.item)
+    $http.post(urlBase + '/delete', this.item)
     .success(function(data, status, headers, config) {
-
-      $scope.items.splice(index, 1);  
-
-      makeFirstNonBackloggedCurrent()
 
       $scope.loading = false;
     })
@@ -121,7 +122,7 @@ var urlBase = "http://lst-app.herokuapp.com";
     
     setCurrentIfNone(this.item);
 
-    $http.post(urlBase + '/items/backlog', this.item)
+    $http.post(urlBase + '/update', $scope.items)
     .success(function(data, status, headers, config) {
       $scope.loading = false;
     })
@@ -141,9 +142,8 @@ var urlBase = "http://lst-app.herokuapp.com";
     if (currentExists() === false)
       makeFirstNonBackloggedCurrent()
     var bob = this.item
-    $http.post(urlBase + '/items/backlog', this.item)
+    $http.post(urlBase + '/update', $scope.items)
     .success(function(data, status, headers, config) {
-      console.log(bob)
       $scope.loading = false;
     })
     .error(function(data, status, headers, config) {
@@ -177,7 +177,7 @@ var urlBase = "http://lst-app.herokuapp.com";
       if ($scope.items[i].backlogged === false) {
         setCurrentIfNone($scope.items[i]);
 
-        $http.post(urlBase + '/items/current', $scope.items[i])
+        $http.post(urlBase + '/update', $scope.items)
         .success(function(data, status, headers, config) {
             $scope.loading = false;
         })

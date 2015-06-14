@@ -36,7 +36,38 @@ server.get("/items", function (req, res) {
 	})
 });
 
-server.post("/items/add", function (req, res) {
+server.post("/update", function (req, res) {
+
+	var list = req.body;
+
+	var completed = 0;
+
+	var finished = function () {
+		console.log(list)
+		completed++;
+		if (completed === list.length)
+			res.json("hello")
+	}
+
+	for (var i in list) {
+		Item.update(
+			{ _id: list[i]._id }, // May error with undef id or create new doc - hopefully create new document
+			{ $set: {
+				"value": 		list[i].value,
+				"created": 		list[i].created,
+				"backlogged": 	list[i].backlogged,
+				"current": 		list[i].current}
+			},
+			{multi: false},
+			function (err) {
+				if (err) return console.log(err);
+				finished();
+			}
+		);
+	}
+});
+
+server.post("/new", function (req, res) {
 
 	var newItem = new Item({
 		value: 		req.body.value,
@@ -51,7 +82,6 @@ server.post("/items/add", function (req, res) {
 });
 
 server.post("/items/backlog", function (req, res) {
-	console.log("hello")
 	Item.update(
 		{ _id: req.body._id },
 		{ $set: { "backlogged": req.body.backlogged, "current": req.body.current} },
@@ -84,7 +114,8 @@ server.post("/items/current", function (req, res) {
 	}
 });
 
-server.post("/items/delete", function (req, res) {
+server.post("/delete", function (req, res) {
+	console.log(req.body)
 	Item.findByIdAndRemove({_id: req.body._id}, function (err) {
 		if (err) return console.log(err);
 		res.json("done")
