@@ -101,9 +101,12 @@
 			background-color: #1396f4;
 		}
 		.item-text {
+			position: relative;
+			top: 50%;
+			transform: translateY(-50%);
+			margin-left: 16.5px;
 			float: left;
 			width: calc(100% - 140px);
-			margin: 16.5px 16.5px;
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
@@ -143,7 +146,7 @@
 
 		<input class="new-item" type="text" ng-model="newItemValue" ng-keypress="addItem($event)">
 		
-		<div ng-sortable="{group:{ name: 'current', pull:false, put:['today']}, animation:150, onAdd:updateCurrent}">
+		<div ng-sortable="{group:{ name: 'current', pull:false, put:['today']}, animation:150, onAdd:updateCurrent, draggable: ''}">
 			<div class="item current" ng-repeat="item in items | filter:{ backlogged: false, current: true}">
 				<div class="add-remove" ng-click="moveFromListToBacklog()"></div>
 				<div class="item-text">{{ item.value }}</div>

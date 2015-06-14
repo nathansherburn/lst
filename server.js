@@ -36,6 +36,20 @@ server.get("/items", function (req, res) {
 	})
 });
 
+server.post("/new", function (req, res) {
+
+	var newItem = new Item({
+		value: 		req.body.value,
+		current:    req.body.current
+	});
+	
+	newItem.save(function (err, item) {
+	  if (err) return console.log(err)
+	  res.json(item);
+	});
+
+});
+
 server.post("/update", function (req, res) {
 
 	var list = req.body;
@@ -51,7 +65,7 @@ server.post("/update", function (req, res) {
 
 	for (var i in list) {
 		Item.update(
-			{ _id: list[i]._id }, // May error with undef id or create new doc - hopefully create new document
+			{ _id: list[i]._id },
 			{ $set: {
 				"value": 		list[i].value,
 				"created": 		list[i].created,
@@ -64,53 +78,6 @@ server.post("/update", function (req, res) {
 				finished();
 			}
 		);
-	}
-});
-
-server.post("/new", function (req, res) {
-
-	var newItem = new Item({
-		value: 		req.body.value,
-		current:    req.body.current
-	});
-	
-	newItem.save(function (err, item) {
-	  if (err) return console.log(err)
-	  res.json(item);
-	});
-
-});
-
-server.post("/items/backlog", function (req, res) {
-	Item.update(
-		{ _id: req.body._id },
-		{ $set: { "backlogged": req.body.backlogged, "current": req.body.current} },
-		{multi: false},
-		function (err) {
-			if (err) return console.log(err);
-			res.json("hello")
-	});
-});
-
-server.post("/items/current", function (req, res) {
-	Item.update(
-		{/* find all */},
-		{current: false},
-		{multi: true},
-		function (err) {
-			if (err) return console.log(err);
-			setCurrent();
-	});
-
-	var setCurrent = function () {
-		Item.update(
-			{_id: req.body._id},
-			{current: true},
-			{multi: false},
-			function (err) {
-				if (err) return console.log(err);
-				res.json("hello")
-		});
 	}
 });
 

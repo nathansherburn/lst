@@ -3,7 +3,7 @@ var lst = angular.module("lst",['ng-sortable'])
 lst.controller("MainCtrl", ['$scope', '$timeout', '$http', function ($scope, $timeout, $http) {
 
 var urlBase = "http://lst-app.herokuapp.com";
-// var urlBase = "http://localhost:3000";
+var urlBase = "http://localhost:3000";
 
   $scope.items = [];
   $scope.backlogOpen = false;
